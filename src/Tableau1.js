@@ -40,6 +40,8 @@ class Tableau1 extends Phaser.Scene {
         });
 
         this.initKeyboard();
+
+
     }
 
 
@@ -94,6 +96,17 @@ class Tableau1 extends Phaser.Scene {
                             break;
                         }
                     }
+                case Phaser.Input.Keyboard.KeyCodes.E:
+                    me.balle.body.setAllowGravity(false);
+                    me.balle.setVelocityY(0);
+                    me.balle.setVelocityX(0);
+                    setTimeout( function () {
+                            me.physics.moveTo(me.balle, me.game.input.mousePointer.x,
+                                me.game.input.mousePointer.y, 500);
+                            me.balle.body.setAllowGravity(true);
+                        },
+                        500)
+                    break;
             }
 
         });
@@ -128,6 +141,8 @@ class Tableau1 extends Phaser.Scene {
                         me.qPress = false;
                     }
                     break;
+
+
             }
         });
     }
