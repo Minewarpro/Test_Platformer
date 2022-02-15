@@ -31,8 +31,7 @@ class Tableau1 extends Phaser.Scene {
         this.balle = this.physics.add.sprite(100,500, 'cercle');
         this.balle.setTintFill(0xFF0000);
         this.balle.setDisplaySize(50,50);
-        this.balle.body.debugShowBody = true;
-        this.balle.body.debugBodyColor = 0xff00ff;
+
 
 
 
@@ -76,10 +75,19 @@ class Tableau1 extends Phaser.Scene {
                     break;
 
                 case Phaser.Input.Keyboard.KeyCodes.S:
-                    me.balle.setVelocityY(600);
-                    me.balle.setVelocityX(0);
-                    break;
 
+                    if (me.sPressed==false){
+                        me.balle.setVelocityY(0);
+                        me.balle.setVelocityX(0);
+                        me.balle.body.setAllowGravity(false);
+                        setTimeout( function () {
+                                me.balle.setVelocityY(600);
+                                me.balle.body.setAllowGravity(true);
+                            },
+                            500)
+                        me.sPressed=true;
+                        break;
+                    }
             }
 
         });
@@ -123,6 +131,9 @@ class Tableau1 extends Phaser.Scene {
             if (this.balle.body.onFloor()){
                 this.balle.setVelocityX(0);
             }
+        }
+        if (this.balle.body.onFloor()){
+            this.sPressed=false;
         }
     }
 }
