@@ -48,30 +48,35 @@ class Tableau1 extends Phaser.Scene {
         this.input.keyboard.on('keydown', function (kevent) {
             switch (kevent.keyCode) {
                 case Phaser.Input.Keyboard.KeyCodes.SPACE:
-
-                    if(me.dejaAppuye){
-                        //fais rien
-                    }else{
-                        me.dejaAppuye=true;//pour la prochaine fois
-                        if (me.balle.body.onFloor()){
-                            me.balle.setVelocityY(-400);
-                            me.doubleJump=1;
-                            me.balleSlow=0;
-                        }
-                        if (me.doubleJump==1 && !me.balle.body.onFloor()){
-                            me.balle.setVelocityY(-400);
-                            me.doubleJump=0;
-                            me.balleSlow=0;
+                    if (me.sPressed==false) {
+                        if (me.dejaAppuye) {
+                            //fais rien
+                        } else {
+                            me.dejaAppuye = true;//pour la prochaine fois
+                            if (me.balle.body.onFloor()) {
+                                me.balle.setVelocityY(-400);
+                                me.doubleJump = 1;
+                                me.balleSlow = 0;
+                            }
+                            if (me.doubleJump == 1 && !me.balle.body.onFloor()) {
+                                me.balle.setVelocityY(-400);
+                                me.doubleJump = 0;
+                                me.balleSlow = 0;
+                            }
                         }
                     }
                     break;
                 case Phaser.Input.Keyboard.KeyCodes.D:
-                    me.balle.setVelocityX(400);
-                    me.dPress=true;
+                    if (me.sPressed==false){
+                        me.balle.setVelocityX(400);
+                        me.dPress=true;
+                    }
                     break;
                 case Phaser.Input.Keyboard.KeyCodes.Q:
-                    me.balle.setVelocityX(-400);
-                    me.qPress=true;
+                    if (me.sPressed==false) {
+                        me.balle.setVelocityX(-400);
+                        me.qPress = true;
+                    }
                     break;
 
                 case Phaser.Input.Keyboard.KeyCodes.S:
@@ -95,29 +100,33 @@ class Tableau1 extends Phaser.Scene {
         this.input.keyboard.on('keyup', function (kevent) {
             switch (kevent.keyCode) {
                 case Phaser.Input.Keyboard.KeyCodes.SPACE:
-                    if (me.balleSlow==0 && me.balle.body.velocity.y<=0){
-                        me.balle.setVelocityY(me.balle.body.velocity.y*0.4);
-                            }
-                    me.dejaAppuye=false;
-                    me.balleSlow = 1;
+                    if (me.sPressed==false) {
+                        if (me.balleSlow == 0 && me.balle.body.velocity.y <= 0) {
+                            me.balle.setVelocityY(me.balle.body.velocity.y * 0.4);
+                        }
+                        me.dejaAppuye = false;
+                        me.balleSlow = 1;
+                    }
                     break;
                 case Phaser.Input.Keyboard.KeyCodes.D:
+                    if (me.sPressed==false) {
                         if (!me.balle.body.onFloor()) {
-                            me.balle.setVelocityX(me.balle.body.velocity.x*0.6)
-                        }
-                        else {
+                            me.balle.setVelocityX(me.balle.body.velocity.x * 0.6)
+                        } else {
                             me.balle.setVelocityX(0);
                         }
-                        me.dPress=false;
+                        me.dPress = false;
+                    }
                     break;
                 case Phaser.Input.Keyboard.KeyCodes.Q:
-                    if (!me.balle.body.onFloor()) {
-                        me.balle.setVelocityX(me.balle.body.velocity.x*0.6)
+                    if (me.sPressed==false) {
+                        if (!me.balle.body.onFloor()) {
+                            me.balle.setVelocityX(me.balle.body.velocity.x * 0.6)
+                        } else {
+                            me.balle.setVelocityX(0);
+                        }
+                        me.qPress = false;
                     }
-                    else {
-                        me.balle.setVelocityX(0);
-                    }
-                    me.qPress=false;
                     break;
             }
         });
