@@ -75,18 +75,19 @@ class Tableau1 extends Phaser.Scene {
                     break;
 
                 case Phaser.Input.Keyboard.KeyCodes.S:
-
-                    if (me.sPressed==false){
-                        me.balle.setVelocityY(0);
-                        me.balle.setVelocityX(0);
-                        me.balle.body.setAllowGravity(false);
-                        setTimeout( function () {
-                                me.balle.setVelocityY(600);
-                                me.balle.body.setAllowGravity(true);
-                            },
-                            500)
-                        me.sPressed=true;
-                        break;
+                    if (!me.balle.body.onFloor()){
+                        if (me.sPressed==false){
+                            me.balle.setVelocityY(0);
+                            me.balle.setVelocityX(0);
+                            me.balle.body.setAllowGravity(false);
+                            setTimeout( function () {
+                                    me.balle.setVelocityY(600);
+                                    me.balle.body.setAllowGravity(true);
+                                },
+                                500)
+                            me.sPressed=true;
+                            break;
+                        }
                     }
             }
 
