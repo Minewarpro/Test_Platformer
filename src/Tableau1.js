@@ -96,16 +96,19 @@ class Tableau1 extends Phaser.Scene {
                             break;
                         }
                     }
-                case Phaser.Input.Keyboard.KeyCodes.E:
+                case Phaser.Input.Keyboard.KeyCodes.SHIFT:
                     me.balle.body.setAllowGravity(false);
                     me.balle.setVelocityY(0);
                     me.balle.setVelocityX(0);
                     setTimeout( function () {
                             me.physics.moveTo(me.balle, me.game.input.mousePointer.x,
                                 me.game.input.mousePointer.y, 500);
-                            me.balle.body.setAllowGravity(true);
-                        },
-                        500)
+                        }, 300)
+
+                    setTimeout( function () {
+                        me.balle.body.setAllowGravity(true);
+                    }, 500)
+
                     break;
             }
 
