@@ -87,7 +87,7 @@ class Tableau1 extends Phaser.Scene {
             switch (kevent.keyCode) {
                 case Phaser.Input.Keyboard.KeyCodes.SPACE:
                     if (me.balleSlow==0 && me.balle.body.velocity.y<=0){
-                        me.balle.setVelocityY(me.balle.body.velocity.y*0.6);
+                        me.balle.setVelocityY(me.balle.body.velocity.y*0.4);
                             }
                     me.dejaAppuye=false;
                     me.balleSlow = 1;
