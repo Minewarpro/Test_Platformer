@@ -2,6 +2,7 @@
  * ALGO: ceci est une classe...
  */
 class Tableau1 extends Phaser.Scene {
+
     /**
      * Précharge les assets
      */
@@ -41,7 +42,7 @@ class Tableau1 extends Phaser.Scene {
         this.balle.setDisplaySize(50,50);
 
 
-        this.physics.add.overlap(this.balle, this.collectible, this.collect_Collectible, null, true);
+        this.physics.add.overlap(this.balle, this.collectible, this.collect_Collectible);
 
         this.physics.add.collider(this.balle, this.sol, function () {
 
@@ -52,7 +53,7 @@ class Tableau1 extends Phaser.Scene {
 
     collect_Collectible(balle, collectible){
         collectible.disableBody(true, true);
-        //this.collectibleCollect=true;
+        this.collectibleCollect=true;
     }
 
 
