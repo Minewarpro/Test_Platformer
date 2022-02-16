@@ -12,7 +12,6 @@ class Tableau1 extends Phaser.Scene {
 
 
     create() {
-
         this.doubleJump=0;
         this.dejaAppuye=false;
         this.tuch=false;
@@ -28,13 +27,20 @@ class Tableau1 extends Phaser.Scene {
         this.sol.body.setAllowGravity(false);
         this.sol.setImmovable(true);
 
+        this.collectible = this.physics.add.sprite(250,300, 'cercle');
+        this.collectible.setTintFill(0xffffff);
+        this.collectible.setDisplaySize(25,25);
+        this.collectible.body.setAllowGravity(false);
+        this.collectible.setImmovable(true);
+
+
 
         this.balle = this.physics.add.sprite(100,500, 'cercle');
         this.balle.setTintFill(0xFF0000);
         this.balle.setDisplaySize(50,50);
 
 
-
+        this.physics.add.overlap(this.balle, this.collectible, this.collectCollectible, null, true);
 
         this.physics.add.collider(this.balle, this.sol, function () {
 
@@ -45,6 +51,9 @@ class Tableau1 extends Phaser.Scene {
 
     }
 
+    collectCollectible(balle, collectible){
+        collectible.disableBody(true, true);
+    }
 
     initKeyboard() {
         let me = this;
