@@ -18,6 +18,7 @@ class Tableau1 extends Phaser.Scene {
         this.doubleJump=1;
         this.dPress=false;
         this.shiftPressed=true;
+        this.collectibleCollect=false;
 
 
 
@@ -27,7 +28,7 @@ class Tableau1 extends Phaser.Scene {
         this.sol.body.setAllowGravity(false);
         this.sol.setImmovable(true);
 
-        this.collectible = this.physics.add.sprite(250,300, 'cercle');
+        this.collectible = this.physics.add.sprite(350,500, 'cercle');
         this.collectible.setTintFill(0xffffff);
         this.collectible.setDisplaySize(25,25);
         this.collectible.body.setAllowGravity(false);
@@ -40,20 +41,20 @@ class Tableau1 extends Phaser.Scene {
         this.balle.setDisplaySize(50,50);
 
 
-        this.physics.add.overlap(this.balle, this.collectible, this.collectCollectible, null, true);
+        this.physics.add.overlap(this.balle, this.collectible, this.collect_Collectible, null, true);
 
         this.physics.add.collider(this.balle, this.sol, function () {
 
         });
 
         this.initKeyboard();
-
-
     }
 
-    collectCollectible(balle, collectible){
+    collect_Collectible(balle, collectible){
         collectible.disableBody(true, true);
+        //this.collectibleCollect=true;
     }
+
 
     initKeyboard() {
         let me = this;
@@ -98,7 +99,7 @@ class Tableau1 extends Phaser.Scene {
                             me.balle.setVelocityX(0);
                             me.balle.body.setAllowGravity(false);
                             setTimeout( function () {
-                                    me.balle.setVelocityY(600);
+                                    me.balle.setVelocityY(1000);
                                     me.balle.body.setAllowGravity(true);
                                 },
                                 500)
@@ -108,22 +109,27 @@ class Tableau1 extends Phaser.Scene {
                     break;
 
                 case Phaser.Input.Keyboard.KeyCodes.SHIFT:
-                    if (me.shiftPressed == false){
-                        me.balle.body.setAllowGravity(false);
-                        me.balle.setVelocityY(0);
-                        me.balle.setVelocityX(0);
-                        setTimeout( function () {
-                            me.physics.moveTo(me.balle, me.game.input.mousePointer.x,
-                                me.game.input.mousePointer.y, 1000);
-                        }, 300)
+                    //if (me.collectibleCollect==true){
+                        if (me.shiftPressed == false){
+                            me.balle.body.setAllowGravity(false);
+                            me.balle.setVelocityY(0);
+                            me.balle.setVelocityX(0);
 
-                        setTimeout( function () {
-                            me.balle.body.setAllowGravity(true);
-                            me.balle.setVelocityY(me.balle.body.velocity.y*0.3)
-                            me.balle.setVelocityX(me.balle.body.velocity.x*0.3)
-                        }, 600)
-                        me.shiftPressed=true;
-                    }
+                            setTimeout( function () {
+                                me.physics.moveTo(me.balle, me.game.input.mousePointer.x,
+                                    me.game.input.mousePointer.y, 1000);
+                            }, 300)
+
+                            setTimeout( function () {
+                                me.balle.body.setAllowGravity(true);
+                                me.balle.setVelocityY(me.balle.body.velocity.y*0.3)
+                                me.balle.setVelocityX(me.balle.body.velocity.x*0.3)
+                            }, 600)
+
+                            me.shiftPressed=true;
+                            me.collectibleCollect=false;
+                        }
+                    //}
                     break;
 
 
