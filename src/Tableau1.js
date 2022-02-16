@@ -3,6 +3,7 @@
  */
 class Tableau1 extends Phaser.Scene {
 
+
     /**
      * Précharge les assets
      */
@@ -13,13 +14,15 @@ class Tableau1 extends Phaser.Scene {
 
 
     create() {
+        let me = this;
         this.doubleJump=0;
         this.dejaAppuye=false;
         this.tuch=false;
         this.doubleJump=1;
         this.dPress=false;
         this.shiftPressed=true;
-        this.collectibleCollect=false;
+        this.collectibleCollect=0;
+
 
 
 
@@ -42,27 +45,27 @@ class Tableau1 extends Phaser.Scene {
         this.balle.setDisplaySize(50,50);
 
 
-        this.physics.add.overlap(this.balle, this.collectible, this.collect_Collectible);
+        this.physics.add.overlap(this.balle, this.collectible, function () {
+            me.collectible.disableBody(true, true);
+            me.collectibleCollect+=1;
+            console.log(me.collectibleCollect)
+        });
 
         this.physics.add.collider(this.balle, this.sol, function () {
 
         });
 
         this.initKeyboard();
-    }
 
-    collect_Collectible(balle, collectible){
-        collectible.disableBody(true, true);
-        this.collectibleCollect=true;
-    }
 
+    }
 
     initKeyboard() {
         let me = this;
         this.input.keyboard.on('keydown', function (kevent) {
             switch (kevent.keyCode) {
                 case Phaser.Input.Keyboard.KeyCodes.SPACE:
-                    if (me.sPressed==false) {
+                    if (me.sPressed===false) {
                         if (me.dejaAppuye) {
                             //fais rien
                         } else {
@@ -72,7 +75,7 @@ class Tableau1 extends Phaser.Scene {
                                 me.doubleJump = 1;
                                 me.balleSlow = 0;
                             }
-                            if (me.doubleJump == 1 && !me.balle.body.onFloor()) {
+                            if (me.doubleJump === 1 && !me.balle.body.onFloor()) {
                                 me.balle.setVelocityY(-400);
                                 me.doubleJump = 0;
                                 me.balleSlow = 0;
@@ -81,13 +84,13 @@ class Tableau1 extends Phaser.Scene {
                     }
                     break;
                 case Phaser.Input.Keyboard.KeyCodes.D:
-                    if (me.sPressed==false){
+                    if (me.sPressed===false){
                         me.balle.setVelocityX(400);
                         me.dPress=true;
                     }
                     break;
                 case Phaser.Input.Keyboard.KeyCodes.Q:
-                    if (me.sPressed==false) {
+                    if (me.sPressed===false) {
                         me.balle.setVelocityX(-400);
                         me.qPress = true;
                     }
@@ -95,7 +98,7 @@ class Tableau1 extends Phaser.Scene {
 
                 case Phaser.Input.Keyboard.KeyCodes.S:
                     if (!me.balle.body.onFloor()){
-                        if (me.sPressed==false){
+                        if (me.sPressed===false){
                             me.balle.setVelocityY(0);
                             me.balle.setVelocityX(0);
                             me.balle.body.setAllowGravity(false);
@@ -110,15 +113,16 @@ class Tableau1 extends Phaser.Scene {
                     break;
 
                 case Phaser.Input.Keyboard.KeyCodes.SHIFT:
-                    //if (me.collectibleCollect==true){
-                        if (me.shiftPressed == false){
+                    if (me.collectibleCollect>0){
+                        if (me.shiftPressed === false){
                             me.balle.body.setAllowGravity(false);
                             me.balle.setVelocityY(0);
                             me.balle.setVelocityX(0);
 
                             setTimeout( function () {
                                 me.physics.moveTo(me.balle, me.game.input.mousePointer.x,
-                                    me.game.input.mousePointer.y, 1000);
+                                    me.game.input.mousePointer.y, 1000*me.collectibleCollect);
+                                me.collectibleCollect=0;
                             }, 300)
 
                             setTimeout( function () {
@@ -128,9 +132,9 @@ class Tableau1 extends Phaser.Scene {
                             }, 600)
 
                             me.shiftPressed=true;
-                            me.collectibleCollect=false;
+
                         }
-                    //}
+                    }
                     break;
 
 
@@ -141,8 +145,8 @@ class Tableau1 extends Phaser.Scene {
         this.input.keyboard.on('keyup', function (kevent) {
             switch (kevent.keyCode) {
                 case Phaser.Input.Keyboard.KeyCodes.SPACE:
-                    if (me.sPressed==false) {
-                        if (me.balleSlow == 0 && me.balle.body.velocity.y <= 0) {
+                    if (me.sPressed===false) {
+                        if (me.balleSlow === 0 && me.balle.body.velocity.y <= 0) {
                             me.balle.setVelocityY(me.balle.body.velocity.y * 0.4);
                         }
                         me.dejaAppuye = false;
@@ -150,7 +154,7 @@ class Tableau1 extends Phaser.Scene {
                     }
                     break;
                 case Phaser.Input.Keyboard.KeyCodes.D:
-                    if (me.sPressed==false) {
+                    if (me.sPressed===false) {
                         if (!me.balle.body.onFloor()) {
                             me.balle.setVelocityX(me.balle.body.velocity.x * 0.6)
                         } else {
@@ -160,7 +164,7 @@ class Tableau1 extends Phaser.Scene {
                     }
                     break;
                 case Phaser.Input.Keyboard.KeyCodes.Q:
-                    if (me.sPressed==false) {
+                    if (me.sPressed===false) {
                         if (!me.balle.body.onFloor()) {
                             me.balle.setVelocityX(me.balle.body.velocity.x * 0.6)
                         } else {
@@ -177,7 +181,7 @@ class Tableau1 extends Phaser.Scene {
 
 
     update() {
-        if(this.dPress==true || this.qPress==true){
+        if(this.dPress===true || this.qPress===true){
 
             }
         else{
