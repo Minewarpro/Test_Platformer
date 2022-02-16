@@ -18,6 +18,7 @@ class Tableau1 extends Phaser.Scene {
         this.tuch=false;
         this.doubleJump=1;
         this.dPress=false;
+        this.shiftPressed=true;
 
 
 
@@ -93,26 +94,34 @@ class Tableau1 extends Phaser.Scene {
                                 },
                                 500)
                             me.sPressed=true;
-                            break;
                         }
                     }
+                    break;
+
                 case Phaser.Input.Keyboard.KeyCodes.SHIFT:
-                    me.balle.body.setAllowGravity(false);
-                    me.balle.setVelocityY(0);
-                    me.balle.setVelocityX(0);
-                    setTimeout( function () {
+                    if (me.shiftPressed == false){
+                        me.balle.body.setAllowGravity(false);
+                        me.balle.setVelocityY(0);
+                        me.balle.setVelocityX(0);
+                        setTimeout( function () {
                             me.physics.moveTo(me.balle, me.game.input.mousePointer.x,
-                                me.game.input.mousePointer.y, 500);
+                                me.game.input.mousePointer.y, 1000);
                         }, 300)
 
-                    setTimeout( function () {
-                        me.balle.body.setAllowGravity(true);
-                    }, 500)
-
+                        setTimeout( function () {
+                            me.balle.body.setAllowGravity(true);
+                            me.balle.setVelocityY(me.balle.body.velocity.y*0.3)
+                            me.balle.setVelocityX(me.balle.body.velocity.x*0.3)
+                        }, 600)
+                        me.shiftPressed=true;
+                    }
                     break;
-            }
 
+
+            }
         });
+
+
         this.input.keyboard.on('keyup', function (kevent) {
             switch (kevent.keyCode) {
                 case Phaser.Input.Keyboard.KeyCodes.SPACE:
@@ -162,6 +171,7 @@ class Tableau1 extends Phaser.Scene {
         }
         if (this.balle.body.onFloor()){
             this.sPressed=false;
+            this.shiftPressed=false;
         }
     }
 }
