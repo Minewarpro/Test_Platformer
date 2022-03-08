@@ -67,7 +67,7 @@ class Tableau1 extends Phaser.Scene {
 
 
         this.fire = this.add.sprite(50, 110, 'fire1').setOrigin(0,0);
-        //animation de 3 images
+
         this.anims.create({
             key: 'fire',
             frames: this.getFrames('fire',16),
