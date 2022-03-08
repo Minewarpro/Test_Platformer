@@ -9,11 +9,17 @@ class Tableau1 extends Phaser.Scene {
     preload() {
         this.load.image('carre', 'assets/carre.png');
         this.load.image('cercle', 'assets/cercle.png');
-        for (let i =0; i<6;i++){
-            this.load.image('cercle', 'assets/cercle.png');
+        for (let i =0; i<16;i++){
+            this.load.image('fire'+i, 'assets/fire/'+i+'.png');
         };
     }
-
+    getFrames(prefix,length){
+        let frames=[];
+        for (let i=1;i<=length;i++){
+            frames.push({key: prefix+i});
+        }
+        return frames;
+    }
 
     create() {
         window.tableau=this;
@@ -57,6 +63,20 @@ class Tableau1 extends Phaser.Scene {
         });
 
         this.initKeyboard();
+
+
+
+        this.fire = this.add.sprite(50, 110, 'fire1').setOrigin(0,0);
+        //animation de 3 images
+        this.anims.create({
+            key: 'fire',
+            frames: this.getFrames('fire',16),
+            frameRate: 16,
+            repeat: -1,
+
+        });
+        this.fire.play('fire');
+        //this.fire.setScale(0.5)
     }
 
     collectCollectible(balle, collectible){
