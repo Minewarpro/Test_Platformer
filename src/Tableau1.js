@@ -10,12 +10,12 @@ class Tableau1 extends Phaser.Scene {
         this.load.image('carre', 'assets/carre.png');
         this.load.image('cercle', 'assets/cercle.png');
         for (let i =0; i<16;i++){
-            this.load.image('fire'+i, 'assets/fire/'+i+'.png');
+            this.load.image('fire'+i, 'assets/fire/'+i+'.gif');
         };
     }
     getFrames(prefix,length){
         let frames=[];
-        for (let i=1;i<=length;i++){
+        for (let i=0;i<=length;i++){
             frames.push({key: prefix+i});
         }
         return frames;
@@ -45,6 +45,19 @@ class Tableau1 extends Phaser.Scene {
         this.collectible.body.setAllowGravity(false);
         this.collectible.setImmovable(true);
 
+        this.fire = this.physics.add.sprite(200, 410, 'fire1').setOrigin(0,0);
+
+        this.anims.create({
+            key: 'fire',
+            frames: this.getFrames('fire',15),
+            frameRate: 16,
+            repeat: -1,
+
+        });
+        this.fire.play('fire');
+        this.fire.setScale(0.5)
+        this.fire.body.setAllowGravity(false);
+        this.fire.setImmovable(true);
 
 
         this.balle = this.physics.add.sprite(100,500, 'cercle');
@@ -53,7 +66,7 @@ class Tableau1 extends Phaser.Scene {
 
         this.physics.add.overlap(
             this.balle,
-            this.collectible,
+            this.fire,
             this.collectCollectible.bind(this)
         );
 
@@ -66,17 +79,8 @@ class Tableau1 extends Phaser.Scene {
 
 
 
-        this.fire = this.add.sprite(50, 110, 'fire1').setOrigin(0,0);
 
-        this.anims.create({
-            key: 'fire',
-            frames: this.getFrames('fire',16),
-            frameRate: 16,
-            repeat: -1,
 
-        });
-        this.fire.play('fire');
-        //this.fire.setScale(0.5)
     }
 
     collectCollectible(balle, collectible){
